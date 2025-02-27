@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">CRAFTCONNECT</div>
+        <ul class="nav-links">
+            <li><a href="{{ url_for('manufacturer_dashboard') }}">Dashboard</a></li>
+            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+        </ul>
+    </nav>
+
+    <section class="form-container">
+        <h2>Add a New Product</h2>
+        <form action="/add_product" method="POST" enctype="multipart/form-data">
+            <label for="product_name">Product Name:</label>
+            <input type="text" name="product_name" required>
+        
+            <label for="category">Category:</label>
+            <select name="category" required>
+                <option value="Clothing">Clothing</option>
+                <option value="Jewelry">Jewelry</option>
+                <option value="Cakes">Cakes</option>
+                <option value="Gifts">Gifts</option>
+            </select>
+        
+            <label for="price">Price:</label>
+            <input type="number" name="price" required>
+        
+            <label for="image">Upload Image:</label>
+            <input type="file" name="image" accept="image/*" required>
+        
+            <button type="submit">Add Product</button>
+        </form>
+        
+    </section>
+
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">CRAFTCONNECT</div>
+        <ul class="nav-links">
+            <li><a href="{{ url_for('customer_dashboard') }}">Dashboard</a></li>
+            <li><a href="{{ url_for('cart') }}">Cart 🛒</a></li>
+            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+        </ul>
+    </nav>
+
+    <section class="checkout-container">
+        <h2>Confirm Your Order</h2>
+        <form action="{{ url_for('place_order') }}" method="POST">
+            <label>Full Name:</label>
+            <input type="text" name="full_name" required>
+
+            <label>Shipping Address:</label>
+            <textarea name="address" required></textarea>
+
+            <label>Payment Method:</label>
+            <select name="payment_method">
+                <option value="COD">Cash on Delivery</option>
+                <option value="Online">Online Payment</option>
+            </select>
+
+            <button type="submit">Place Order</button>
+        </form>
+    </section>
+
+</body>
+</html>

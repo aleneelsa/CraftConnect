@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Products</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">CRAFTCONNECT</div>
+        <ul class="nav-links">
+            <li><a href="{{ url_for('customer_dashboard') }}">Dashboard</a></li>
+            <li><a href="{{ url_for('cart') }}">Cart 🛒</a></li>
+            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+        </ul>
+    </nav>
+
+    <section class="product-container">
+        <h2>Available Products</h2>
+        {% if products %}
+            <div class="products-grid">
+                {% for product in products %}
+                <div class="product-card">
+                    <img src="{{ url_for('static', filename='uploads/' + product[4]) }}" alt="{{ product[1] }}">
+                    <h3>{{ product[1] }}</h3>
+                    <p>{{ product[2] }}</p>
+                    <p class="price"><strong>Price: ₹{{ product[3] }}</strong></p>
+                    <form action="{{ url_for('add_to_cart', product_id=product[0]) }}" method="POST">
+                        <button type="submit">Add to Cart</button>
+                    </form>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No products available.</p>
+        {% endif %}
+    </section>
+
+</body>
+</html>

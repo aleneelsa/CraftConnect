@@ -1,0 +1,26 @@
+@app.route('/cancel_order/<int:order_id>', methods=["POST"])
+def cancel_order(order_id):
+    if "user_id" not in session:
+        flash("You must be logged in to cancel an order.", "danger")
+        return redirect(url_for("login"))
+
+    user_id = session["user_id"]
+
+    conn = sqlite3.connect("craftconnect.db")
+    cursor = conn.cursor()
+
+    # Check if the order is still in "Processing" state
+    cursor.execute("SELECT status FROM orders WHERE id=? AND user_id=?", (order_id, user_id))
+    order = cursor.fetchone()
+
+    if order and order[0] == "Processing":
+        # Delete the order
+        cursor.execute("DELETE FROM orders WHERE id=? AND user_id=?", (order_id, user_id))
+        conn.commit()
+        conn.close()
+
+        flash("Your order has been canceled successfully.", "success")
+    else:
+        flash("You cannot cancel this order.", "danger")
+
+    return redirect(url_for("orders"))
