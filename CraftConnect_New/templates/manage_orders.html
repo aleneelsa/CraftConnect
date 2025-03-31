@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Orders</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        /* Orders Table */
+        .orders-table {
+           width: 100%;
+           border-collapse: collapse;
+           margin: 20px 0;
+        }
+
+        .orders-table th,
+        .orders-table td {
+           padding: 10px;
+           text-align: center;
+           border: 1px solid #ddd;
+        } 
+
+        .orders-table th {
+           background-color: #4D0F28;
+           color: white;
+           font-weight: bold;
+        }
+
+        .orders-table td {
+            font-size: 14px;
+            color: #333;
+        } 
+
+        /* Buttons */
+        .update-btn {
+           background-color: #4D0F28;
+           padding: 5px 10px;
+           font-size: 14px;
+           color: white;
+           border: none;
+           border-radius: 5px;
+           cursor: pointer;
+           transition: background-color 0.3s ease;
+        }
+
+        .update-btn:hover {
+           background-color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">CRAFTCONNECT</div>
+        <ul class="nav-links">
+            <li><a href="{{ url_for('manufacturer_dashboard') }}">Dashboard</a></li>
+            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+        </ul>
+    </nav>
+
+    <section class="order-container">
+        <h2>Manage Orders</h2>
+        {% if orders %}
+        <table class="orders-table">
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Customer Name</th>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                    <th>Total Price</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td>{{ order['id'] }}</td>
+                    <td>{{ order['customer_name'] }}</td>
+                    <td>{{ order['product_name'] }}</td>
+                    <td>{{ order['quantity'] }}</td>
+                    <td>₹{{ order['total_price'] }}</td>
+                    <td>
+                        <form action="{{ url_for('update_order_status', order_id=order['id']) }}" method="POST">
+                            <select name="status" required>
+                                <option value="Processing" {% if order['status'] == 'Processing' %}selected{% endif %}>Processing</option>
+                                <option value="Shipped" {% if order['status'] == 'Shipped' %}selected{% endif %} {% if order['status'] == 'Cancelled' %}disabled{% endif %}>Shipped</option>
+                                <option value="Delivered" {% if order['status'] == 'Delivered' %}selected{% endif %} {% if order['status'] == 'Cancelled' %}disabled{% endif %}>Delivered</option>
+                                <option value="Cancelled" {% if order['status'] == 'Cancelled' %}selected{% endif %} {% if order['status'] in ['Shipped', 'Delivered'] %}disabled{% endif %}>Cancelled</option>
+                            </select>
+                            <button type="submit" class="update-btn">Update</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+            <p>No orders found.</p>
+        {% endif %}
+    </section>
+
+</body>
+</html>

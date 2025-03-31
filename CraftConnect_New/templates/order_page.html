@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">CRAFTCONNECT</div>
+        <ul class="nav-links">
+            <li><a href="{{ url_for('customer_dashboard') }}">Dashboard</a></li>
+            <li><a href="{{ url_for('cart') }}">Cart 🛒</a></li>
+            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+        </ul>
+    </nav>
+    <section class="order-container">
+        <h1>Order Details</h1>
+        <div class="product-summary">
+            <img src="{{ url_for('static', filename='uploads/' + product[4]) }}" alt="{{ product[1] }}">
+            <h2>{{ product[1] }}</h2>
+            <p>{{ product[2] }}</p>
+            <p class="price">Price: ₹{{ product[3] }}</p>
+            {% if product[5] %}
+                <p class="stock">Available Stock: {{ product[5] }}</p>
+            {% else %}
+                <p class="stock">Stock: Unlimited</p>
+            {% endif %}
+        </div>
+        <form action="{{ url_for('confirm_order', product_id=product[0]) }}" method="POST">
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" name="quantity" value="1" min="1" required>
+            <button type="submit" class="button confirm-order">Confirm Order</button>
+        </form>
+    </section>
+</body>
+</html>

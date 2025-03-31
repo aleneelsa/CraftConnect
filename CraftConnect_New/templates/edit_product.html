@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Product</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="logo">CRAFTCONNECT</div>
+    <ul class="nav-links">
+        <li><a href="{{ url_for('manufacturer_dashboard') }}">Dashboard</a></li>
+        <li><a href="{{ url_for('logout') }}">Logout</a></li>
+    </ul>
+</nav>
+
+<section class="form-container">
+    <h2>Edit Product</h2>
+    <form method="POST" enctype="multipart/form-data">
+        <label for="name">Product Name:</label>
+        <input type="text" id="product_name" name="product_name" value="{{ product['name'] }}" required>
+    
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" required>{{ product['description'] }}</textarea>
+    
+        <label for="category">Category:</label>
+        <select id="category" name="category" required>
+            <option value="Clothing" {% if product['category'] == 'Clothing' %}selected{% endif %}>Clothing</option>
+            <option value="Jewelry" {% if product['category'] == 'Jewelry' %}selected{% endif %}>Jewelry</option>
+            <option value="Cakes" {% if product['category'] == 'Cakes' %}selected{% endif %}>Cakes</option>
+            <option value="Gifts" {% if product['category'] == 'Gifts' %}selected{% endif %}>Gifts</option>
+        </select>
+    
+        <label for="price">Price:</label>
+        <input type="number" id="price" name="price" step="0.01" value="{{ product['price'] }}" required>
+    
+        <label for="image">Image:</label>
+        <input type="file" id="image" name="image">
+    
+        <label for="stock_limit">Stock Limit (Optional):</label>
+        <input type="number" id="stock_limit" name="stock_limit" min="0" value="{{ product['stock_limit'] }}">
+    
+        <button type="submit">Update Product</button>
+    </form>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Products</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">CRAFTCONNECT</div>
+        <ul class="nav-links">
+            <li><a href="{{ url_for('manufacturer_dashboard') }}">Dashboard</a></li>
+            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+        </ul>
+    </nav>
+
+    <section class="product-container">
+        <h2>Manage Your Products</h2>
+    
+        {% if products %}
+        <div class="product-grid">
+            {% for product in products %}
+            <div class="product-card">
+                <img src="{{ url_for('static', filename='uploads/' + product[4]) }}" alt="{{ product[1] }}">
+                <h3>{{ product['name'] }}</h3>
+                <p>{{ product['description'] }}</p>
+                <p><strong>Price:</strong> {{ product['price'] }}</p>
+                <p><strong>Category:</strong> {{ product['category'] }}</p>
+                <p><strong>Stock:</strong> {{ product['stock_limit'] if product['stock_limit'] else 'Unlimited' }}</p>
+                <div class="actions">
+                    <a href="{{ url_for('edit_product', product_id=product['id']) }}" class="edit-btn">Edit</a>
+                    <form action="{{ url_for('delete_product', product_id=product['id']) }}" method="POST" style="display:inline;">
+                        <button type="submit" class="delete-btn">Delete</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+            <p>No products found.</p>
+        {% endif %}
+    </section>
+
+</body>
+</html>

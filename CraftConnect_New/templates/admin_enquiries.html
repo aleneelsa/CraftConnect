@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Enquiries</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <h2>Customer Enquiries</h2>
+    <table border="1">
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Message</th>
+            <th>Reply</th>
+            <th>Action</th>
+        </tr>
+        {% for enquiry in enquiries %}
+        <tr>
+            <td>{{ enquiry[1] }}</td>
+            <td>{{ enquiry[2] }}</td>
+            <td>{{ enquiry[3] }}</td>
+            <td>
+                <form action="{{ url_for('reply_enquiry', enquiry_id=enquiry[0]) }}" method="POST">
+                    <textarea name="reply_message" required></textarea>
+                    <button type="submit">Send Reply</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

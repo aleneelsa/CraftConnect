@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product[1] }} - Product Details</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">CRAFTCONNECT</div>
+        <ul class="nav-links">
+            <li><a href="{{ url_for('customer_dashboard') }}">Dashboard</a></li>
+            <li><a href="{{ url_for('cart') }}">Cart 🛒</a></li>
+            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+        </ul>
+    </nav>
+    <section class="product-details-container">
+        <div class="product-image">
+            <!-- Product Image on the Left -->
+            <div class="product-image">
+                <img src="{{ url_for('static', filename='uploads/' + product['image']) }}" alt="{{ product['name'] }}">
+            </div>
+    
+            <!-- Product Details on the Right -->
+            <div class="product-details">
+                <h1>{{ product['name'] }}</h1>
+                <p>{{ product['description'] }}</p>
+                <p><strong>Price:</strong> ${{ product['price'] }}</p>
+    
+                <!-- Size Chart -->
+                {% if product['size_chart'] %}
+                <div class="size-chart">
+                    <h3>Size Chart</h3>
+                    <img src="{{ url_for('static', filename='uploads/' + product['size_chart']) }}" alt="Size Chart">
+                </div>
+                {% endif %}
+    
+                <!-- Add to Cart and Buy Now Buttons -->
+                <div class="product-actions">
+                    <form method="POST" action="{{ url_for('add_to_cart', product_id=product['id']) }}">
+                        <button type="submit" class="add-to-cart-btn">Add to Cart</button>
+                    </form>
+                    <form method="GET" action="{{ url_for('order_page', product_id=product['id']) }}">
+                        <button type="submit" class="buy-now-btn">Buy Now</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Manufacturer Details Section -->
+    <section class="manufacturer-details-container">
+        <h2>Manufacturer Details</h2>
+        <p><strong>Name:</strong> {{ product['manufacturer_name'] }}</p>
+        <p><strong>Phone:</strong> {{ product['phone'] }}</p>
+        <p><strong>WhatsApp:</strong> {{ product['whatsapp'] }}</p>
+        <p><strong>Address:</strong> {{ product['address'] }}</p>
+        <p><strong>Description:</strong> {{ product['manufacturer_description'] }}</p>
+    
+        <!-- Contact Manufacturer Button -->
+        <a href="{{ url_for('contact_manufacturer', product_id=product['id'], manufacturer_id=product['manufacturer_id'], customer_id=session['user_id']) }}" class="contact-manufacturer-btn">
+            Contact Manufacturer
+        </a>
+    </section>
+    
+    <!-- Reviews and Feedback Section -->
+    <section class="product-rating-feedback">
+        <h3>Rate and Review This Product</h3>
+    
+        <!-- Rating Form -->
+        <form method="POST" action="{{ url_for('submit_rating', product_id=product['id']) }}">
+            <label for="rating">Your Rating:</label>
+            <div class="star-rating">
+                <input type="radio" id="star5" name="rating" value="5" required>
+                <label for="star5" title="5 stars">&#9733;</label>
+    
+                <input type="radio" id="star4" name="rating" value="4">
+                <label for="star4" title="4 stars">&#9733;</label>
+    
+                <input type="radio" id="star3" name="rating" value="3">
+                <label for="star3" title="3 stars">&#9733;</label>
+    
+                <input type="radio" id="star2" name="rating" value="2">
+                <label for="star2" title="2 stars">&#9733;</label>
+    
+                <input type="radio" id="star1" name="rating" value="1">
+                <label for="star1" title="1 star">&#9733;</label>
+            </div>
+    
+            <label for="feedback">Your Feedback:</label>
+            <textarea id="feedback" name="feedback" rows="4" placeholder="Write your feedback here..." required></textarea>
+    
+            <button type="submit">Submit</button>
+        </form>
+    
+        <!-- Display Existing Ratings and Feedback -->
+        <div class="existing-reviews">
+            <h3>Customer Reviews</h3>
+            {% if reviews %}
+                {% for review in reviews %}
+                <div class="review">
+                    <p><strong>{{ review['user_name'] }}</strong> rated it 
+                        <span class="stars">
+                            {% for i in range(review['rating']) %}
+                                &#9733;
+                            {% endfor %}
+                            {% for i in range(5 - review['rating']) %}
+                                &#9734;
+                            {% endfor %}
+                        </span>
+                    </p>
+                    <p>{{ review['feedback'] }}</p>
+                    <p class="review-date">{{ review['timestamp'] }}</p>
+                </div>
+                <hr>
+                {% endfor %}
+            {% else %}
+                <p>No reviews yet. Be the first to review this product!</p>
+            {% endif %}
+        </div>
+    </section>
+
+    <section class="similar-products">
+        <h2>Similar Products</h2>
+        <div class="product-grid">
+            {% for similar_product in similar_products %}
+            <div class="product-card">
+                <img src="{{ url_for('static', filename='uploads/' + similar_product[3]) }}" alt="{{ similar_product[1] }}">
+                <h3>{{ similar_product[1] }}</h3>
+                <p>Price: ₹{{ similar_product[2] }}</p>
+                <a href="{{ url_for('product_details', product_id=similar_product[0]) }}" class="view-details-btn">View Details</a>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const productImage = document.querySelector(".product-image img");
+    
+            productImage.addEventListener("click", function () {
+                if (this.style.transform === "scale(2)") {
+                    this.style.transform = "scale(1)";
+                    this.style.cursor = "zoom-in";
+                } else {
+                    this.style.transform = "scale(2)";
+                    this.style.cursor = "zoom-out";
+                }
+            });
+        });
+    </script>
+    <script>
+        function openModal() {
+            document.getElementById("sizeChartModal").style.display = "block";
+        }
+    
+        function closeModal() {
+            document.getElementById("sizeChartModal").style.display = "none";
+        }
+    
+        // Close the modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById("sizeChartModal");
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>

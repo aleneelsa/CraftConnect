@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - CraftConnect</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">CRAFTCONNECT</div>
+        <ul class="nav-links">
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li><a href="{{ url_for('login') }}">Login</a></li>
+            <li><a href="{{ url_for('signup') }}">Sign Up</a></li>
+        </ul>
+    </nav>
+
+    <!-- Sign Up Form Section -->
+    <section class="auth-section">
+        <div class="form-container">
+            <h2>Create Your Account</h2>
+            <form id="signup-form" action="/signup" method="POST" enctype="multipart/form-data">
+                <input type="text" id="name" name="name" placeholder="Full Name" required>
+                <input type="email" id="email" name="email" placeholder="Email" required>
+                <input type="password" id="password" name="password" placeholder="Password" required>
+                <input type="text" id="phone" name="phone" placeholder="Phone no." required>
+                <input type="text" id="whatsapp" name="whatsapp" placeholder="Whatsapp no." required>
+                <input type="address" id="address" name="address" placeholder="Address" required>
+
+                <label>User Type:</label>
+                <select name="user_type">
+                    <option value="customer">Customer</option>
+                    <option value="manufacturer">Manufacturer</option>
+                </select>
+
+                <label>Profile Picture:</label>
+                <input type="file" name="profile_pic" accept="image/*">
+
+                <button type="submit">Sign Up</button>
+                <p>Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
+            </form>
+        </div>
+    </section>
+
+    <!-- Flash messages -->
+    <div id="flash-messages">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="footer">
+            <ul>
+                <li><a href="{{ url_for('about') }}">About Us</a></li>
+                <li><a href="{{ url_for('faqs') }}">FAQs</a></li>
+                <li><a href="{{ url_for('contact') }}">Contact</a></li>
+            </ul>
+            <p>© 2025 CraftConnect. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        $(document).ready(function() {
+            // Show flash messages as popups
+            $('.flash-message').each(function() {
+                var message = $(this).text();
+                var category = $(this).attr('class').split(' ')[1];
+                alert(category.toUpperCase() + ": " + message);
+            });
+
+            // Signup Form Validation
+            $('#signup-form').submit(function(event) {
+                var name = $('#name').val().trim();
+                var email = $('#email').val().trim();
+                var password = $('#password').val().trim();
+
+                // 1. Name should start with a letter
+                var namePattern = /^[A-Za-z][A-Za-z\s]*$/;
+                if (!namePattern.test(name)) {
+                    alert("Name must start with a letter and contain only letters and spaces.");
+                    event.preventDefault();
+                    return;
+                }
+
+                // 2. Email validation (proper format + accepted domains)
+                var emailPattern = /^[A-Za-z][A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+                var allowedDomains = ["gmail.com", "yahoo.com", "outlook.com", "hotmail.com", "icloud.com"];
+                var emailParts = email.split('@');
+                if (!emailPattern.test(email) || !allowedDomains.includes(emailParts[1])) {
+                    alert("Please enter a valid email with an accepted domain (e.g., gmail.com, yahoo.com).");
+                    event.preventDefault();
+                    return;
+                }
+
+                // 3. Password validation (8+ characters, 1 number, 1 special char, 1 uppercase, 1 lowercase)
+                var passwordPattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+                if (!passwordPattern.test(password)) {
+                    alert("Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character.");
+                    event.preventDefault();
+                    return;
+                }
+
+                var phone = $('#phone').val().trim();
+var whatsapp = $('#whatsapp').val().trim();
+var phonePattern = /^[0-9]{10}$/;
+
+// Phone number validation
+if (!phonePattern.test(phone)) {
+    alert("Phone number must be exactly 10 digits and numeric only.");
+    event.preventDefault();
+    return;
+}
+
+// WhatsApp number validation
+if (!phonePattern.test(whatsapp)) {
+    alert("WhatsApp number must be exactly 10 digits and numeric only.");
+    event.preventDefault();
+    return;
+}
+            });
+        });
+    </script>
+
+</body>
+</html>

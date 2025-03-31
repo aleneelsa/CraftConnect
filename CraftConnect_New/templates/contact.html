@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - CraftConnect</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background: #fff;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+        }
+
+        .nav-links li {
+            margin-left: 20px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #000;
+            font-size: 16px;
+        }
+
+        /* Contact Section */
+        .contact-container {
+            display: flex;
+            width: 90%;
+            margin: auto;
+            padding: 50px 0;
+            align-items: center;
+        }
+
+        .contact-image {
+            width: auto;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .contact-content {
+            width: 50%;
+            padding-left: 40px;
+        }
+
+        .contact-content h2 {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .contact-content p {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .info-section {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .info-section div {
+            width: 45%;
+        }
+
+        .info-section p {
+            margin: 5px 0;
+        }
+
+        /* Form Styling */
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .contact-form input, 
+        .contact-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-bottom: 1px solid #ccc;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .contact-form button {
+            background: none;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            color: #7A6C58;
+            display: flex;
+            align-items: center;
+        }
+
+        .contact-form button::after {
+            content: ' →';
+            margin-left: 5px;
+            font-size: 18px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .contact-container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .contact-image, 
+            .contact-content {
+                width: 100%;
+            }
+
+            .contact-content {
+                padding-left: 0;
+                margin-top: 20px;
+            }
+
+            .info-section {
+                flex-direction: column;
+            }
+
+            .info-section div {
+                width: 100%;
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">CRAFTCONNECT</div>
+        <ul class="nav-links">
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li><a href="{{ url_for('login') }}">Login</a></li>
+            <li><a href="{{ url_for('signup') }}">Sign Up</a></li>
+        </ul>
+    </nav>
+
+    <!-- Contact Section -->
+    <section class="contact-container">
+        <!-- Left Side: Image -->
+        <img src="{{ url_for('static', filename='images/contact_image.jpg') }}" class="contact-image" alt="Contact Image">
+
+        <!-- Right Side: Contact Info & Form -->
+        <div class="contact-content">
+            <h2>CONTACT</h2>
+            <p>Have a vision for your space? Connect with CRAFTCONNECT, where innovation meets timeless creativity. Let’s bring your ideas to life with expertise and commitment.</p>
+
+            <div class="info-section">
+                <div>
+                    <h4>For Appointments</h4>
+                    <p>Monday - Saturday</p>
+                    <p>10:00 AM - 7:00 PM</p>
+                    <p>+91 98765 43210</p>
+                    <p>support@craftconnect.com</p>
+                </div>
+                <div>
+                    <h4>For Enquiries</h4>
+                    <form class="contact-form" action="{{ url_for('submit_contact_form') }}" method="POST">
+                        <input type="text" name="name" placeholder="Name" required>
+                        <input type="email" name="email" placeholder="Email" required>
+                        <textarea name="message" placeholder="Message" rows="4" required></textarea>
+                        <button type="submit">Submit Enquire</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>
