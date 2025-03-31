@@ -1,0 +1,19 @@
+<h2>My Orders</h2>
+<table>
+    <tr>
+        <th>Order ID</th>
+        <th>Product</th>
+        <th>Quantity</th>
+        <th>Total Price</th>
+        <th>Status</th>
+    </tr>
+    {% for order in orders %}
+    <tr>
+        <td>{{ order[0] }}</td>
+        <td>{{ order[1] }}</td>
+        <td>{{ order[2] }}</td>
+        <td>${{ order[3] }}</td>
+        <td><strong>{{ order[4] }}</strong></td>
+    </tr>
+    {% endfor %}
+</table>

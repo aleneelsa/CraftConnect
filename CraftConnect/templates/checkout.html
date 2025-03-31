@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">CRAFTCONNECT</div>
+        <ul class="nav-links">
+            <li><a href="{{ url_for('customer_dashboard') }}">Dashboard</a></li>
+            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+        </ul>
+    </nav>
+
+    <section class="checkout">
+        <form action="{{ url_for('place_order') }}" method="POST">
+            <div class="order-summary">
+                <h3>Order Summary</h3>
+                <ul>
+                    {% for item in cart_items %}
+                    <li class="order-item">
+                        <div class="item-details">
+                            <p><strong>Product:</strong> {{ item[1] }}</p>
+                            <p><strong>Quantity:</strong> {{ item[3] }}</p>
+                            <p><strong>Price:</strong> ${{ item[2] }}</p>
+                            <p><strong>Total:</strong> ${{ item[2] * item[3] }}</p>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <p><strong>Grand Total:</strong> ${{ grand_total }}</p>
+            </div>
+            <div class="form-group">
+                <label for="address">Delivery Address:</label>
+                <textarea name="address" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number:</label>
+                <input type="text" name="phone" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="payment_status">Payment Method:</label>
+                <select name="payment_status" required>
+                    <option value="COD" selected>Cash on Delivery</option>
+                </select>
+            </div>
+            <button type="submit" class="button">Place Order</button>
+        </form>
+    </section>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

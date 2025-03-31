@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cancel Order</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="logo">CRAFTCONNECT</div>
+    <ul class="nav-links">
+        <li><a href="{{ url_for('customer_dashboard') }}">Dashboard</a></li>
+        <li><a href="{{ url_for('track_order') }}">Track Orders</a></li>
+        <li><a href="{{ url_for('logout') }}">Logout</a></li>
+    </ul>
+</nav>
+
+<section class="cancel-container">
+    <h2>Cancel Order</h2>
+    <p>Are you sure you want to cancel Order #{{ order_id }}?</p>
+
+    <form action="{{ url_for('confirm_cancel_order', order_id=order_id) }}" method="POST">
+        <button type="submit" class="confirm-btn">Yes, Cancel Order</button>
+    </form>
+
+    <a href="{{ url_for('track_order') }}" class="back-btn">No, Go Back</a>
+</section>
+
+</body>
+</html>

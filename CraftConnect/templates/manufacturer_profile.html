@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manufacturer Profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">CRAFTCONNECT</div>
+        <ul class="nav-links">
+            <li><a href="{{ url_for('manufacturer_dashboard') }}">Dashboard</a></li>
+            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+        </ul>
+    </nav>
+
+    <div class="profile-container">
+        <h1>Manufacturer Profile</h1>
+        <p><strong>Username:</strong> {{ manufacturer.username }}</p> <!-- Username -->
+        <p><strong>Phone:</strong> {{ manufacturer.phone }}</p> <!-- Phone -->
+        <p><strong>WhatsApp:</strong> {{ manufacturer.whatsapp }}</p> <!-- WhatsApp -->
+        <p><strong>Address:</strong> {{ manufacturer.address }}</p> <!-- Address -->
+        <p><strong>Description:</strong> {{ manufacturer.description }}</p> <!-- Description -->
+    </div>
+</body>
+</html>

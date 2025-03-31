@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Orders</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        /* Card Layout for Orders */
+        .order-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .order-card {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            width: 300px;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+
+        .order-card h3 {
+            font-size: 20px;
+            color: #4D0F28;
+            margin-bottom: 10px;
+        }
+
+        .order-card p {
+            font-size: 14px;
+            color: #333;
+            margin: 5px 0;
+        }
+
+        .order-card .cancel-btn {
+            display: inline-block;
+            background-color: #a10202;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .order-card .cancel-btn:hover {
+            background-color: #cc0000;
+        }
+
+        .order-card .status {
+            font-weight: bold;
+            color: #4D0F28;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="logo">CRAFTCONNECT</div>
+    <ul class="nav-links">
+        <li><a href="{{ url_for('customer_dashboard') }}">Dashboard</a></li>
+        <li><a href="{{ url_for('logout') }}">Logout</a></li>
+    </ul>
+</nav>
+
+<section class="dashboard">
+    <h2>Track Your Orders</h2>
+
+    {% if orders %}
+    <div class="order-container">
+        {% for order in orders %}
+        <div class="order-card">
+            <h3>Order ID: {{ order[0] }}</h3>
+            <p><strong>Product:</strong> {{ order[1] }}</p>
+            <p><strong>Quantity:</strong> {{ order[2] }}</p>
+            <p><strong>Total Price:</strong> ₹{{ order[3] }}</p>
+            <p><strong>Payment Status:</strong> {{ order[4] }}</p>
+            <p><strong>Address:</strong> {{ order[5] }}</p>
+            <p><strong>Phone:</strong> {{ order[6] }}</p>
+            <p><strong>Email:</strong> {{ order[7] }}</p>
+            <p class="status"><strong>Status:</strong> {{ order[8] }}</p>
+            {% if order[8] == "Processing" %}
+                <a href="{{ url_for('cancel_order', order_id=order[0]) }}" class="cancel-btn">Cancel Order</a>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+        <p>No orders found.</p>
+    {% endif %}
+
+</section>
+
+</body>
+</html>

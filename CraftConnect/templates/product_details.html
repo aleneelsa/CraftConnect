@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product[1] }} - Product Details</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">CRAFTCONNECT</div>
+        <ul class="nav-links">
+            <li><a href="{{ url_for('customer_dashboard') }}">Dashboard</a></li>
+            <li><a href="{{ url_for('cart') }}">Cart 🛒</a></li>
+            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+        </ul>
+    </nav>
+    <section class="product-details-container">
+        <div class="product-image">
+            <img src="{{ url_for('static', filename='uploads/' + product[4]) }}" alt="{{ product[1] }}">
+        </div>
+        <div class="product-details">
+            <h1>{{ product[1] }}</h1>
+            <p>{{ product[2] }}</p>
+            <p class="price">Price: ₹{{ product[3] }}</p>
+            <p class="stock">
+                {% if product[6] %}
+                    Available Stock: {{ product[6] }}
+                {% else %}
+                    Stock: Unlimited
+                {% endif %}
+            </p>
+            {% if product[5] == 'Clothing' %}
+            {% if product[7] %}
+                <button class="size-chart-button" onclick="openModal()">View Size Chart</button>
+
+            <!-- Modal for Size Chart -->
+                <div id="sizeChartModal" class="modal">
+                  <div class="modal-content">
+                    <span class="close" onclick="closeModal()">&times;</span>
+                    <img src="{{ url_for('static', filename='uploads/' + product[7]) }}" alt="Size Chart" class="size-chart-image">
+                  </div>
+                </div>
+            {% else %}
+                    <p>No size chart available for this product.</p>
+            {% endif %}
+            <form action="{{ url_for('order_page', product_id=product[0]) }}" method="POST">
+                <button type="submit" class="button buy-now">Buy Now</button>
+            </form>
+            <button class="button">Add to Cart</button>
+            {% endif %}
+        </div>
+    </section>
+    <!-- Manufacturer Details Section -->
+    <section class="manufacturer-details-container">
+        <h2>Manufacturer Details</h2>
+        <p><strong>Name:</strong> {{ product[8] }}</p>
+        <p><strong>Phone:</strong> {{ product[9] }}</p>
+        <p><strong>WhatsApp:</strong> {{ product[10] }}</p>
+        <p><strong>Address:</strong> {{ product[11] }}</p>
+        <p><strong>Description:</strong> {{ product[12] }}</p>
+        
+    <!-- Contact Manufacturer Button -->
+        <a href="{{ url_for('contact_manufacturer', product_id=product[0], manufacturer_id=product[8], customer_id=session['user_id']) }}" class="contact-manufacturer-btn">
+          Contact Manufacturer
+        </a>
+    </section>
+
+    <section class="similar-products">
+        <h2>Similar Products</h2>
+        <div class="product-grid">
+            {% for similar_product in similar_products %}
+            <div class="product-card">
+                <img src="{{ url_for('static', filename='uploads/' + similar_product[3]) }}" alt="{{ similar_product[1] }}">
+                <h3>{{ similar_product[1] }}</h3>
+                <p>Price: ₹{{ similar_product[2] }}</p>
+                <a href="{{ url_for('product_details', product_id=similar_product[0]) }}" class="view-details-btn">View Details</a>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const productImage = document.querySelector(".product-image img");
+    
+            productImage.addEventListener("click", function () {
+                if (this.style.transform === "scale(2)") {
+                    this.style.transform = "scale(1)";
+                    this.style.cursor = "zoom-in";
+                } else {
+                    this.style.transform = "scale(2)";
+                    this.style.cursor = "zoom-out";
+                }
+            });
+        });
+    </script>
+    <script>
+        function openModal() {
+            document.getElementById("sizeChartModal").style.display = "block";
+        }
+    
+        function closeModal() {
+            document.getElementById("sizeChartModal").style.display = "none";
+        }
+    
+        // Close the modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById("sizeChartModal");
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
